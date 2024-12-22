@@ -28,33 +28,35 @@
     <div class="container">
         <h1>Word转Markdown在线转换工具</h1>
         
-        <div class="conversion-section">
-            <!-- 文件上传区域 -->
-            <div class="upload-section">
-                <h2>上传Word文档</h2>
-                <div class="file-controls">
-                    <input type="file" id="uploadFile" accept=".docx" />
-                    <button class="btn btn-clear" onclick="clearFile()">清除文件</button>
-                    <button class="btn" onclick="convertFileToMarkdown()">转换为Markdown</button>
-                </div>
-            </div>
-
-            <!-- Markdown输出区域 -->
-            <div class="output-section">
-                <h2>Markdown内容</h2>
-                <textarea id="outputText" placeholder="转换后的Markdown内容..." readonly></textarea>
-                <button class="btn" onclick="copyToClipboard('outputText')">复制Markdown内容</button>
-            </div>
+        <!-- Markdown输出区域 -->
+        <div class="output-section">
+            <h2>Markdown内容</h2>
+            <textarea id="outputText" placeholder="转换后的Markdown内容..." readonly></textarea>
+            <button class="btn" onclick="copyToClipboard('outputText')">复制Markdown内容</button>
         </div>
 
         <!-- 粘贴区域 -->
         <div class="paste-section">
-            <h2>或直接粘贴Word内容</h2>
+            <h2>直接粘贴Word内容</h2>
             <div class="paste-controls">
                 <div id="pasteArea" class="paste-area" contenteditable="true" placeholder="在此粘贴Word内容..."></div>
                 <div class="button-group">
                     <button class="btn btn-clear" onclick="clearPasteArea()">清空内容</button>
                     <button class="btn" onclick="convertPastedText()">转换为Markdown</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文件上传区域 -->
+        <div class="upload-section">
+            <h2>或上传Word文档</h2>
+            <div class="file-controls">
+                <div class="file-input-group">
+                    <input type="file" id="uploadFile" accept=".docx" />
+                    <div class="small-buttons">
+                        <button class="btn-small btn-clear" onclick="clearFile()">清除文件</button>
+                        <button class="btn-small" onclick="convertFileToMarkdown()">转换</button>
+                    </div>
                 </div>
             </div>
         </div>

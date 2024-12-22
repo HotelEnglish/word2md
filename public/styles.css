@@ -263,3 +263,82 @@ textarea:focus {
         flex-direction: column;
     }
 } 
+
+/* 输出区域样式 */
+.output-section {
+    margin-bottom: 30px;
+}
+
+/* 粘贴区域样式 */
+.paste-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e1e8ed;
+}
+
+/* 文件上传区域样式 */
+.upload-section {
+    margin-top: 20px;
+}
+
+.file-input-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+input[type="file"] {
+    flex: 1;
+    padding: 8px;
+    margin: 0;
+    border: 2px dashed #3498db;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.small-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* 小按钮样式 */
+.btn-small {
+    padding: 6px 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-small:hover {
+    background-color: #2980b9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-small.btn-clear {
+    background-color: #e74c3c;
+}
+
+.btn-small.btn-clear:hover {
+    background-color: #c0392b;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .file-input-group {
+        flex-direction: column;
+    }
+
+    .small-buttons {
+        width: 100%;
+    }
+
+    .btn-small {
+        flex: 1;
+        text-align: center;
+    }
+} 
