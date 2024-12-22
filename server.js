@@ -1,31 +1,35 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const mammoth = require('mammoth');
-const MarkdownIt = require('markdown-it');
-
+const path = require('path');
 const app = express();
-const md = new MarkdownIt();
 
-app.use(bodyParser.json());
-app.use(express.static('public')); // 用于提供静态文件
+// 静态文件服务
+app.use(express.static('public'));
+app.use(express.json());
 
-// Word转Markdown
+// 主页路由
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'converter.html'));
+});
+
+// API 路由
 app.post('/convertToMarkdown', (req, res) => {
-    const html = req.body.content;
-    const markdown = md.render(html);
-    res.json({ markdown });
+    // 您的转换逻辑
 });
 
-// Markdown转Word
-app.post('/convertToWord', (req, res) => {
-    const markdown = req.body.content;
-    // 这里可以实现Markdown到Word的转换逻辑
-    // 例如使用mammoth库
-    const wordContent = markdown; // 这里需要实现转换逻辑
-    res.json({ wordContent });
+// 处理 404
+app.use((req, res) => {
+    res.status(404).sendFile(path.join(__dirname, 'public', 'converter.html'));
 });
 
+// 设置端口
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-}); 
+
+// 启动服务器
+if (require.main === module) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
+
+// 导出 app 以供 Vercel 使用
+module.exports = app; 
