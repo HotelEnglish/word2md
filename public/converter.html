@@ -1,1 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Word转Markdown在线转换工具 - 免费在线文档格式转换</title>
+    <meta name="description" content="免费在线Word转Markdown工具，支持Word文档格式转换为Markdown格式，支持表格、图片、列表等格式，快速简单的文档转换工具。支持文件上传和复制粘贴两种方式转换。">
+    <meta name="keywords" content="Word转Markdown,文档转换,在线转换工具,格式转换,Markdown编辑器,文档处理,在线工具,免费工具">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Word转Markdown在线转换工具">
+    <meta property="og:description" content="免费在线Word转Markdown工具，支持Word文档格式转换为Markdown格式，快速简单的文档转换工具。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://您的网站域名">
+    
+    <!-- 其他meta标签 -->
+    <meta name="author" content="酒店英语">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://您的网站域名">
 
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turndown/7.1.2/turndown.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Word与Markdown转换器</h1>
+        
+        <h2>上传Word文档</h2>
+        <input type="file" id="uploadFile" accept=".docx" />
+        <button class="btn" onclick="convertFileToMarkdown()">转换为Markdown</button>
+        
+        <h2>或直接粘贴Word内容</h2>
+        <div id="pasteArea" class="paste-area" contenteditable="true" placeholder="在此粘贴Word内容..."></div>
+        <button class="btn" onclick="convertPastedText()">转换为Markdown</button>
+
+        <h2>Markdown内容</h2>
+        <textarea id="outputText" placeholder="转换后的Markdown内容..." readonly></textarea>
+        <button class="btn" onclick="copyToClipboard('outputText')">复制Markdown内容</button>
+
+        <!-- 添加友情链接和二维码 -->
+        <div class="links-section">
+            <h3 class="widget-title">友情链接</h3>    
+            <div class="links-container">
+                <p id="hotel" class="youqinglink">
+                    <a href="https://www.hotelenglish.cn/" target="_blank" title="酒店英语学习资源和培训课程">酒店英语 - 专业的酒店英语学习平台</a>
+                </p>  
+                <p id="webTech" class="youqinglink">
+                    <a href="https://www.begs.cn/" target="_blank" title="网络技术解决方案和服务">网络龚略 - 专业的网络技术服务</a>
+                </p>    
+                <p id="Wenku" class="youqinglink">
+                    <a href="https://wenku.hotelenglish.cn/" target="_blank" title="酒店行业文档资料库">酒店文库 - 丰富的酒店行业资料</a>
+                </p>  
+                <p id="anli" class="youqinglink">
+                    <a href="https://ai.hotelcases.cn/" target="_blank" title="酒店AI应用案例分享">酒店 AI - 智能酒店解决方案</a>
+                </p>
+            </div>
+        </div>
+
+        <div class="widget widget_block">
+            <h3 class="widget-title">关注酒店英语</h3>
+            <p align="center">
+                <img decoding="async" src="https://scdn.hotelenglish.cn/wp-content/uploads/2024/01/1706181681-qr_art_480.jpg" width="300" title="酒店英语二维码" alt="酒店英语二维码">
+            </p>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2013-2024 <a href="https://www.hotelenglish.cn">酒店英语</a></p>
+            <p style="text-align: center;">
+                <a style="color: blue;" href="http://beian.miit.gov.cn/">琼ICP备19001286号</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 配置 TurndownService 的表格处理规则
+        const turndownService = new TurndownService({
+            headingStyle: 'atx',
+            hr: '---',
+            bulletListMarker: '-',
+            codeBlockStyle: 'fenced'
+        });
+
+        // 添加表格处理规则
+        turndownService.addRule('tableCell', {
+            filter: ['th', 'td'],
+            replacement: function (content, node) {
+                return ' ' + content + ' |';
+            }
+        });
+
+        turndownService.addRule('table', {
+            filter: 'table',
+            replacement: function (content, node) {
+                const rows = node.rows;
+                let markdown = '\n';
+
+                // 处理表头
+                if (rows.length > 0) {
+                    const headerCells = rows[0].cells;
+                    markdown += '|';
+                    for (let i = 0; i < headerCells.length; i++) {
+                        markdown += ' ' + headerCells[i].textContent.trim() + ' |';
+                    }
+                    markdown += '\n|';
+                    
+                    // 添加分隔行
+                    for (let i = 0; i < headerCells.length; i++) {
+                        markdown += ' --- |';
+                    }
+                    markdown += '\n';
+                }
+
+                // 处理表格内容
+                for (let i = 1; i < rows.length; i++) {
+                    const cells = rows[i].cells;
+                    markdown += '|';
+                    for (let j = 0; j < cells.length; j++) {
+                        markdown += ' ' + cells[j].textContent.trim() + ' |';
+                    }
+                    markdown += '\n';
+                }
+
+                return markdown + '\n';
+            }
+        });
+
+        function convertFileToMarkdown() {
+            const fileInput = document.getElementById('uploadFile');
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const arrayBuffer = event.target.result;
+                    mammoth.convertToHtml({arrayBuffer: arrayBuffer})
+                        .then(function(result) {
+                            const html = result.value;
+                            const markdown = turndownService.turndown(html);
+                            document.getElementById('outputText').value = markdown;
+                        })
+                        .catch(function(err) {
+                            console.log(err);
+                            alert("转换过程中发生错误：" + err.message);
+                        });
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                alert("请上传一个Word文档！");
+            }
+        }
+
+        function convertPastedText() {
+            const pasteArea = document.getElementById('pasteArea');
+            const html = pasteArea.innerHTML;
+            
+            try {
+                const markdown = turndownService.turndown(html);
+                document.getElementById('outputText').value = markdown;
+            } catch (err) {
+                console.log(err);
+                alert("转换过程中发生错误：" + err.message);
+            }
+        }
+
+        // 添加粘贴事件处理
+        const pasteArea = document.getElementById('pasteArea');
+        pasteArea.addEventListener('paste', function(e) {
+            e.preventDefault();
+            const clipboardData = e.clipboardData || window.clipboardData;
+            const html = clipboardData.getData('text/html') || clipboardData.getData('text');
+            document.execCommand('insertHTML', false, html);
+        });
+
+        // Placeholder 效果
+        pasteArea.addEventListener('focus', function() {
+            if (this.innerHTML === this.getAttribute('placeholder')) {
+                this.innerHTML = '';
+            }
+        });
+
+        pasteArea.addEventListener('blur', function() {
+            if (this.innerHTML === '') {
+                this.innerHTML = this.getAttribute('placeholder');
+            }
+        });
+
+        // 初始化 placeholder
+        if (pasteArea.innerHTML === '') {
+            pasteArea.innerHTML = pasteArea.getAttribute('placeholder');
+        }
+
+        function copyToClipboard(elementId) {
+            const textArea = document.getElementById(elementId);
+            textArea.select();
+            document.execCommand('copy');
+            alert('内容已复制到剪贴板！');
+        }
+    </script>
+</body>
+</html> 
