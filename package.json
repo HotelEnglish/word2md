@@ -1,0 +1,27 @@
+{
+  "name": "word-to-markdown",
+  "version": "1.0.0",
+  "description": "Convert Word documents to Markdown format online",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "word",
+    "markdown",
+    "converter",
+    "document",
+    "format"
+  ],
+  "author": "酒店英语",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mammoth": "^1.4.2",
+    "turndown": "^7.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+} 
