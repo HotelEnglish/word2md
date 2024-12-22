@@ -209,3 +209,57 @@ textarea:focus {
         margin: 10px 0;
     }
 } 
+
+/* 转换区域布局 */
+.conversion-section {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.upload-section, .output-section {
+    flex: 1;
+}
+
+.file-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.paste-section {
+    margin-top: 30px;
+    border-top: 1px solid #e1e8ed;
+    padding-top: 20px;
+}
+
+.paste-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* 清除按钮样式 */
+.btn-clear {
+    background-color: #e74c3c;
+}
+
+.btn-clear:hover {
+    background-color: #c0392b;
+}
+
+/* 响应式设计调整 */
+@media (max-width: 768px) {
+    .conversion-section {
+        flex-direction: column;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+} 

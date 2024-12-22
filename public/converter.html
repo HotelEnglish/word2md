@@ -26,19 +26,38 @@
 </head>
 <body>
     <div class="container">
-        <h1>Word与Markdown转换器</h1>
+        <h1>Word转Markdown在线转换工具</h1>
         
-        <h2>上传Word文档</h2>
-        <input type="file" id="uploadFile" accept=".docx" />
-        <button class="btn" onclick="convertFileToMarkdown()">转换为Markdown</button>
-        
-        <h2>或直接粘贴Word内容</h2>
-        <div id="pasteArea" class="paste-area" contenteditable="true" placeholder="在此粘贴Word内容..."></div>
-        <button class="btn" onclick="convertPastedText()">转换为Markdown</button>
+        <div class="conversion-section">
+            <!-- 文件上传区域 -->
+            <div class="upload-section">
+                <h2>上传Word文档</h2>
+                <div class="file-controls">
+                    <input type="file" id="uploadFile" accept=".docx" />
+                    <button class="btn btn-clear" onclick="clearFile()">清除文件</button>
+                    <button class="btn" onclick="convertFileToMarkdown()">转换为Markdown</button>
+                </div>
+            </div>
 
-        <h2>Markdown内容</h2>
-        <textarea id="outputText" placeholder="转换后的Markdown内容..." readonly></textarea>
-        <button class="btn" onclick="copyToClipboard('outputText')">复制Markdown内容</button>
+            <!-- Markdown输出区域 -->
+            <div class="output-section">
+                <h2>Markdown内容</h2>
+                <textarea id="outputText" placeholder="转换后的Markdown内容..." readonly></textarea>
+                <button class="btn" onclick="copyToClipboard('outputText')">复制Markdown内容</button>
+            </div>
+        </div>
+
+        <!-- 粘贴区域 -->
+        <div class="paste-section">
+            <h2>或直接粘贴Word内容</h2>
+            <div class="paste-controls">
+                <div id="pasteArea" class="paste-area" contenteditable="true" placeholder="在此粘贴Word内容..."></div>
+                <div class="button-group">
+                    <button class="btn btn-clear" onclick="clearPasteArea()">清空内容</button>
+                    <button class="btn" onclick="convertPastedText()">转换为Markdown</button>
+                </div>
+            </div>
+        </div>
 
         <!-- 添加友情链接和二维码 -->
         <div class="links-section">
@@ -198,6 +217,20 @@
             textArea.select();
             document.execCommand('copy');
             alert('内容已复制到剪贴板！');
+        }
+
+        // 添加清除文件功能
+        function clearFile() {
+            const fileInput = document.getElementById('uploadFile');
+            fileInput.value = ''; // 清除文件
+            document.getElementById('outputText').value = ''; // 清除输出内容
+        }
+
+        // 添加清空粘贴区域功能
+        function clearPasteArea() {
+            const pasteArea = document.getElementById('pasteArea');
+            pasteArea.innerHTML = pasteArea.getAttribute('placeholder');
+            document.getElementById('outputText').value = ''; // 清除输出内容
         }
     </script>
 </body>
